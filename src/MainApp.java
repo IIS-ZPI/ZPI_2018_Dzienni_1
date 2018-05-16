@@ -22,9 +22,5 @@ public class MainApp extends Application {
         Scene scene = new Scene(root,640,480);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-        DataLoader dataLoader = new DataLoader("taxes.dat");
-        Map<String, List<Float>> data = dataLoader.getData();
-        System.out.println(data.toString());
     }
 }
