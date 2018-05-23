@@ -4,9 +4,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.util.List;
-import java.util.Map;
-
 public class MainApp extends Application {
     public static void main(String[] args) {
         launch(args);
