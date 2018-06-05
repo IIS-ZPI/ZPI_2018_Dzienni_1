@@ -13,13 +13,13 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs = ['src/zpi.taxcalculator/java']
+            srcDirs = ['src/zpi/taxcalculator/java']
         }
     }
 
     test {
         java {
-            srcDirs = ['src/zpi.taxcalculator/test']
+            srcDirs = ['src/zpi/taxcalculator/test']
         }
     }
 }
