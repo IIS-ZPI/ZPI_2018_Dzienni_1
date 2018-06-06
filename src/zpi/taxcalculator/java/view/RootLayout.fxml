@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.RootLayoutController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RootLayoutController">
+    <children>
+        <TableView layoutX="231.0" layoutY="14.0" prefHeight="367.0" prefWidth="304.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="State" />
+                <TableColumn prefWidth="75.0" text="Netto" />
+                <TableColumn prefWidth="75.0" text="Brutto" />
+                <TableColumn prefWidth="75.0" text="Profit" />
+            </columns>
+        </TableView>
+        <TextField layoutX="14.0" layoutY="143.0" promptText="Price" />
+        <ChoiceBox layoutX="14.0" layoutY="74.0" prefWidth="150.0" />
+        <ChoiceBox layoutX="14.0" layoutY="22.0" prefWidth="150.0" />
+    </children>
 </AnchorPane>
