@@ -86,4 +86,25 @@ public class TaxData {
     public void setIntangiblesTax(String intangiblesTax) {
         this.intangiblesTax = intangiblesTax;
     }
+
+    @Override public boolean equals(Object obj) {
+        if(obj == this){
+            return true;
+        }
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+        TaxData data = (TaxData) obj;
+        return (data.baseTax == this.baseTax && data.clothingTax.equals(this.clothingTax) && data.foodTax.equals(this.foodTax)
+                && data.groceriesTax.equals(this.groceriesTax) && data.intangiblesTax.equals(this.intangiblesTax)
+                && data.nonPrescriptionDrugTax.equals(this.nonPrescriptionDrugTax) && data.prescriptionDrugTax.equals(
+        this.prescriptionDrugTax) && data.state.equals(this.state));
+
+    }
+
+/*        return (data.baseTax == this.baseTax && data.clothingTax.equals(this.clothingTax) && data.foodTax.equals(this.foodTax)
+            && data.groceriesTax.equals(this.groceriesTax) && data.intangiblesTax.equals(this.intangiblesTax)
+            && data.nonPrescriptionDrugTax.equals(this.nonPrescriptionDrugTax) && data.prescriptionDrugTax.equals(
+            this.prescriptionDrugTax) && data.state.equals(this.state));*/
+
 }
