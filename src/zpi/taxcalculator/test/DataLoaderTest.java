@@ -58,4 +58,22 @@ public class DataLoaderTest {
             throw e.getTargetException();
         }
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void convertingFilesShouldThrowIllegalArgumentExceptionBecauseOfWrongTaxPattern() throws Throwable {
+        try{
+            TaxData data = (TaxData) method.invoke(dataLoader,"Alabama\t4\tb\tb\te\tb\te,>-175\tb");
+        }
+        catch(InvocationTargetException e){
+            throw e.getTargetException();
+        }
+    }
+
+    @Test public void convertFileLineToTaxDataObjectShouldReturnCorrectDataWithUsageOfSpecialSigns() throws Exception {
+        TaxData test = new TaxData("Alabama", 4, "b", "b,>200", "e", "b", "e,>300", "b");
+        TaxData data = (TaxData) method.invoke(dataLoader,"Alabama\t4\tb\tb,>200\te\tb\te,>300\tb");
+
+        assertEquals(test, data);
+    }
+
 }
