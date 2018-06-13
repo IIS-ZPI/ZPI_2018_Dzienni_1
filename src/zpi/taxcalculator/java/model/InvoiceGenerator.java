@@ -8,7 +8,7 @@ public class InvoiceGenerator {
         List<InvoiceEntry> invoiceEntryList = new ArrayList<>();
 
         if (productList.size() != taxPolicyList.size()) {
-            throw new IllegalArgumentException("productList size not equals taxPolicyLength");
+            throw new IllegalArgumentException("productList size does not equal taxPolicyList size");
         }
 
         for (int i = 0; i < productList.size() ; i++) {
