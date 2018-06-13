@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class TaxData {
 
     private String state;
@@ -87,24 +89,26 @@ public class TaxData {
         this.intangiblesTax = intangiblesTax;
     }
 
-    @Override public boolean equals(Object obj) {
-        if(obj == this){
-            return true;
-        }
-        if(obj == null || obj.getClass() != this.getClass()){
-            return false;
-        }
-        TaxData data = (TaxData) obj;
-        return (data.baseTax == this.baseTax && data.clothingTax.equals(this.clothingTax) && data.foodTax.equals(this.foodTax)
-                && data.groceriesTax.equals(this.groceriesTax) && data.intangiblesTax.equals(this.intangiblesTax)
-                && data.nonPrescriptionDrugTax.equals(this.nonPrescriptionDrugTax) && data.prescriptionDrugTax.equals(
-        this.prescriptionDrugTax) && data.state.equals(this.state));
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaxData taxData = (TaxData) o;
+        return Float.compare(taxData.baseTax, baseTax) == 0 &&
+                Objects.equals(state, taxData.state) &&
+                Objects.equals(groceriesTax, taxData.groceriesTax) &&
+                Objects.equals(foodTax, taxData.foodTax) &&
+                Objects.equals(prescriptionDrugTax, taxData.prescriptionDrugTax) &&
+                Objects.equals(nonPrescriptionDrugTax, taxData.nonPrescriptionDrugTax) &&
+                Objects.equals(clothingTax, taxData.clothingTax) &&
+                Objects.equals(intangiblesTax, taxData.intangiblesTax);
     }
 
-/*        return (data.baseTax == this.baseTax && data.clothingTax.equals(this.clothingTax) && data.foodTax.equals(this.foodTax)
-            && data.groceriesTax.equals(this.groceriesTax) && data.intangiblesTax.equals(this.intangiblesTax)
-            && data.nonPrescriptionDrugTax.equals(this.nonPrescriptionDrugTax) && data.prescriptionDrugTax.equals(
-            this.prescriptionDrugTax) && data.state.equals(this.state));*/
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(state, baseTax, groceriesTax, foodTax, prescriptionDrugTax, nonPrescriptionDrugTax, clothingTax, intangiblesTax);
+    }
+
 
 }
