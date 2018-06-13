@@ -4,6 +4,8 @@ public class Tax {
     private float taxValue;
     private float taxValuePercent;
 
+    public Tax() {}
+
     public Tax(float taxValue, float taxValuePercent) {
         this.taxValue = taxValue;
         this.taxValuePercent = taxValuePercent;
