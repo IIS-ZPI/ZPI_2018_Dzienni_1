@@ -56,6 +56,9 @@ public class TaxPolicy {
         if (taxString.equals("b")) {
             return taxData.getBaseTax();
         }
+        else if (taxString.equals("e")) {
+            return 0;
+        }
         else if (taxString.equals("?")) {
             return 0;
         }
