@@ -14,7 +14,7 @@ public class InvoiceGenerator {
         for (int i = 0; i < productList.size() ; i++) {
             Product product = productList.get(i);
             Tax tax = taxPolicyList.get(i).calculateTax(product);
-            Float grossPrice = product.getNetPrice() * (1 + tax.getTaxValuePercent() / 100);
+            Float grossPrice = product.getNetPrice() + tax.getTaxValue();
             invoiceEntryList.add(new InvoiceEntry(productList.get(i), tax, grossPrice));
         }
         return invoiceEntryList;
