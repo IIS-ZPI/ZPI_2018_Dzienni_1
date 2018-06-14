@@ -1,9 +1,22 @@
+if: branch = master
 language: java
 jdk: 
- - oraclejdk8
-# safelist
-branches:
-  only:
-  - master
+  - oraclejdk8
 before_install:
-- chmod +x gradlew
+  - chmod +x gradlew
+  - gradle build
+  - gradle fatJar 
+before_deploy:
+  - git config --global user.email "travis@travis-ci.org"
+  - git config --global user.name "Travis"
+  - export GIT_TAG="$(date +'%d%m%y%H%M')"
+  - git tag -a $GIT_TAG -m "Generated from TravisCI at $(date +'%H:%M') on $(date +'%d/%m/%y')."
+  - git remote add origin2 https://${TOKEN}@github.com/IIS-ZPI/ZPI_2018_Dzienni_1.git
+  - git push origin2 --tags
+  - git fetch origin2
+deploy:
+  provider: releases
+  api_key: $TOKEN
+  file: "/home/travis/build/IIS-ZPI/ZPI_2018_Dzienni_1/build/libs/TaxesApp-ZPI_2018_Dzienni_1-*"
+  skip_cleanup: true
+  file_glob: "true"
