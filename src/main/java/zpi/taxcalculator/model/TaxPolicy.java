@@ -14,38 +14,33 @@ public class TaxPolicy {
         float productNetPrice = product.getNetPrice();
 
         Tax tax = new Tax();
-        float parsedTaxValuePercent;
+        float parsedTaxValuePercent = 0f;
 
         switch (productType) {
             case NO_TYPE:
-                tax.setTaxValuePercent(taxData.getBaseTax());
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                parsedTaxValuePercent = taxData.getBaseTax();
                 break;
             case GROCERIES:
                 parsedTaxValuePercent = parseFloat(taxData.getGroceriesTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
             case PREPARED_FOOD:
                 parsedTaxValuePercent = parseFloat(taxData.getFoodTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
             case PRESCRIPTION_DRUG:
                 parsedTaxValuePercent = parseFloat(taxData.getPrescriptionDrugTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
             case NON_PRESCRIPTION_DRUG:
                 parsedTaxValuePercent = parseFloat(taxData.getNonPrescriptionDrugTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
             case CLOTHING:
                 parsedTaxValuePercent = parseFloat(taxData.getClothingTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
             case INTANGIBLES:
                 parsedTaxValuePercent = parseFloat(taxData.getIntangiblesTax(), productNetPrice);
-                tax.setTaxValuePercent(parsedTaxValuePercent);
-                tax.setTaxValue(product.getNetPrice() * (taxData.getBaseTax() / 100f));
+                break;
         }
+        tax.setTaxValuePercent(parsedTaxValuePercent);
+        tax.setTaxValue(product.getNetPrice() * (parsedTaxValuePercent / 100f));
         return tax;
     }
 
