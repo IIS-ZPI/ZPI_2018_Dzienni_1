@@ -1,4 +1,4 @@
-package zpi.taxcalculator.view;
+package zpi.taxcalculator.controller;
 
 public class RootLayoutController {
 }
