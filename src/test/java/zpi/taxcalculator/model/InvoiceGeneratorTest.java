@@ -8,8 +8,8 @@ import java.util.List;
 
 public class InvoiceGeneratorTest {
 
-    Product product1 = new Product(Product.ProductType.GROCERIES,25f);
-    Product product2 = new Product(Product.ProductType.PREPARED_FOOD, 10f);
+    Product product1 = new Product("Apple", Product.ProductType.GROCERIES,25f);
+    Product product2 = new Product("Pizza", Product.ProductType.PREPARED_FOOD, 10f);
    // TaxPolicy policy1 = new TaxPolicy(new TaxData("Alabama",4,"b","b","b","b","b","b"));
     TaxPolicy policy1 = new TaxPolicy(new TaxData("Alabama", 4, "b", "b", "e", "b", "b", "b"));
     TaxPolicy policy2 = new TaxPolicy(new TaxData("Massachusetts", 6, "e", "b", "e", "b", "e,>175", "e"));
