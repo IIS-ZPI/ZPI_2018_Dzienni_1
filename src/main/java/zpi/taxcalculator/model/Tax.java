@@ -1,4 +1,4 @@
-package model;
+package zpi.taxcalculator.model;
 
 public class Tax {
     private float taxValue;

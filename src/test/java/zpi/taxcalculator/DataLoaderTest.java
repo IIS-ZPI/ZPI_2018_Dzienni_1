@@ -1,15 +1,14 @@
-import model.TaxData;
+package zpi.taxcalculator;
+
+import zpi.taxcalculator.model.TaxData;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.core.Is.is;
 
 public class DataLoaderTest {
 

@@ -1,4 +1,4 @@
-package model;
+package zpi.taxcalculator.model;
 
 import java.util.ArrayList;
 import java.util.List;
