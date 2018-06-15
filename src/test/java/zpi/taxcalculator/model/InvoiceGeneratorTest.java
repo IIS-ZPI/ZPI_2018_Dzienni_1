@@ -14,9 +14,13 @@ public class InvoiceGeneratorTest {
 
     Product product1 = new Product("Apple", Product.ProductType.GROCERIES,25f);
     Product product2 = new Product("Pizza", Product.ProductType.PREPARED_FOOD, 10f);
+    Product product3 = new Product("Shirt", Product.ProductType.CLOTHING, 350f);
+    Product product4 = new Product("Shirt", Product.ProductType.CLOTHING, 150f);
 
     TaxPolicy policy1 = new TaxPolicy(new TaxData("Alabama", 4, "b", "b", "e", "b", "b", "b"));
     TaxPolicy policy2 = new TaxPolicy(new TaxData("Massachusetts", 6, "e", "b", "e", "b", "e,>175", "e"));
+    TaxPolicy policy3 = new TaxPolicy(new TaxData("Montana", 0, "n/a", "n/a", "n/a", "n/a", "n/a", "n/a"));
+
 
     List<Product> productList = new ArrayList<Product>();
     List<TaxPolicy> policyList = new ArrayList<TaxPolicy>();
@@ -50,4 +54,20 @@ public class InvoiceGeneratorTest {
         assertThat(2,is(invoice.size()));
     }
 
+    @Test
+    public void TaxCalculationsShouldReturnCorrectGrossPrice(){
+        productList.add(product3); //tax on clothing above 175$ - should calculate
+        productList.add(product4); //tax on clothing below 175 - shouldn't calculate.
+        productList.add(product1);
+
+        policyList.add(policy2);
+        policyList.add(policy2);
+        policyList.add(policy3);
+        invoice = InvoiceGenerator.generateInvoice(productList, policyList);
+
+        assertThat(371f,is(invoice.get(2).getGrossPrice())); //adding tax >175$
+        assertThat(150f,is(invoice.get(3).getGrossPrice())); //not adding tax <175$
+        assertThat(25f, is(invoice.get(4).getGrossPrice())); //montana is without taxex - gross without changes
+
+    }
 }
