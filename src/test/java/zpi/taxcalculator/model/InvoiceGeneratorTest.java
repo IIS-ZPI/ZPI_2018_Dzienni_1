@@ -54,20 +54,33 @@ public class InvoiceGeneratorTest {
         assertThat(2,is(invoice.size()));
     }
 
+    //calculating taxes tests
     @Test
-    public void TaxCalculationsShouldReturnCorrectGrossPrice(){
+    public void TaxCalculationsShouldReturnCorrectGrossPriceWithPriceAbove175Dollard(){
         productList.add(product3); //tax on clothing above 175$ - should calculate
-        productList.add(product4); //tax on clothing below 175 - shouldn't calculate.
-        productList.add(product1);
+        policyList.add(policy2);
 
-        policyList.add(policy2);
-        policyList.add(policy2);
-        policyList.add(policy3);
         invoice = InvoiceGenerator.generateInvoice(productList, policyList);
 
         assertThat(371f,is(invoice.get(2).getGrossPrice())); //adding tax >175$
-        assertThat(150f,is(invoice.get(3).getGrossPrice())); //not adding tax <175$
-        assertThat(25f, is(invoice.get(4).getGrossPrice())); //montana is without taxex - gross without changes
+    }
+    @Test
+    public void TaxCalculationsShouldReturnCorrectGrossPriceWithoutAdditionalTax(){
+        productList.add(product4); //tax on clothing below 175 - shouldn't calculate.
+        policyList.add(policy2);
+        invoice = InvoiceGenerator.generateInvoice(productList, policyList);
+        assertThat(150f,is(invoice.get(2).getGrossPrice())); //not adding tax <175$
 
     }
+    @Test
+    public void TaxCalculationsShouldReturnCorrectGrossPriceWithoutAnyTaxesOnState(){
+        productList.add(product1);
+
+        policyList.add(policy3);
+        invoice = InvoiceGenerator.generateInvoice(productList, policyList);
+
+        assertThat(25f, is(invoice.get(2).getGrossPrice())); //montana is without taxex - gross without changes
+
+    }
+
 }
