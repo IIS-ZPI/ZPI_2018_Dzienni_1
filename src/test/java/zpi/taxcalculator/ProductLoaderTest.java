@@ -1,6 +1,7 @@
 package zpi.taxcalculator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import zpi.taxcalculator.model.Product;
@@ -66,15 +67,14 @@ public class ProductLoaderTest {
     @Test(expected = IllegalArgumentException.class)
     public void convertingShouldThrowExceptionBecauseOfWrongProductType() throws Throwable {
         try {
-            Product testProduct = (Product) method.invoke(productLoader, "marchewka,illegalDrug,5");
+            Product testProduct = (Product) method.invoke(productLoader, "marihuanen,illegalDrug,5");
         }
         catch(InvocationTargetException e){
             throw e.getTargetException();
         }
     }
 
-
-    @Test
+    @Ignore @Test
     public void getData() {
     }
 }

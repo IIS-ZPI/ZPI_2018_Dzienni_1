@@ -6,6 +6,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+
+
 public class InvoiceGeneratorTest {
 
     Product product1 = new Product("Apple", Product.ProductType.GROCERIES,25f);
@@ -33,4 +37,17 @@ public class InvoiceGeneratorTest {
         invoice = InvoiceGenerator.generateInvoice(productList,policyList);
 
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void generatingInvoiceWithDifferentSizedListsShouldThrowException(){
+        productList.add(new Product("placeholder", Product.ProductType.GROCERIES, 5f));
+        invoice = InvoiceGenerator.generateInvoice(productList, policyList);
+    }
+
+    @Test
+    public void generateInvoiceShouldReturnCorrectAmountOfProductsOnInvoice(){
+        invoice = InvoiceGenerator.generateInvoice(productList, policyList);
+        assertThat(2,is(invoice.size()));
+    }
+
 }
