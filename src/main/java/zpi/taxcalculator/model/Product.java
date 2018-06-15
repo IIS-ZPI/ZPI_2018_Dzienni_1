@@ -14,6 +14,7 @@ public class Product {
     private Float netPrice;
 
     public Product(String name, ProductType productType, Float netPrice) {
+        this.name = name;
         this.productType = productType;
         this.netPrice = netPrice;
     }
