@@ -17,8 +17,6 @@ public class ProductLoaderTest {
     Method method;
     ProductLoader productLoader = Mockito.mock(ProductLoader.class);
 
-    String correctProduct = "marchewka,groceries,3";
-    String incorrectProduct = "marchewka,groceries,3,asd";
 
     @Before
     public void setUp() throws Exception {
