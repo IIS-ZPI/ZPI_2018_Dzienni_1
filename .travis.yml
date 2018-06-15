@@ -4,8 +4,8 @@ jdk:
   - oraclejdk8
 before_install:
   - chmod +x gradlew
-  - gradle clean test jfxJar --stacktrace
 before_deploy:
+  - ./gradlew jfxJar
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis"
   - export GIT_TAG="$(date +'%d%m%y%H%M')"
