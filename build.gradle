@@ -21,7 +21,7 @@ testlogger {
     showStandardStreams false
 }
 
-version '1.1'
+version '0.1'
 
 apply plugin: 'java'
 
