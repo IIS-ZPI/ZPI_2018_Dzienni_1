@@ -4,9 +4,8 @@ jdk:
   - oraclejdk8
 before_install:
   - chmod +x gradlew
-  - gradle build
-  - gradle fatJar 
 before_deploy:
+  - ./gradlew jfxJar
   - git config --global user.email "travis@travis-ci.org"
   - git config --global user.name "Travis"
   - export GIT_TAG="$(date +'%d%m%y%H%M')"
@@ -17,6 +16,6 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $TOKEN
-  file: "/home/travis/build/IIS-ZPI/ZPI_2018_Dzienni_1/build/libs/TaxesApp-ZPI_2018_Dzienni_1-*"
+  file: "/home/travis/build/IIS-ZPI/ZPI_2018_Dzienni_1/build/jfx/app/TaxesApp-ZPI_2018_Dzienni_1-*"
   skip_cleanup: true
   file_glob: "true"
