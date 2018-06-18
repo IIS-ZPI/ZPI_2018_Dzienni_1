@@ -1,22 +1,38 @@
-plugins {
-    id 'java'
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+    
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
 }
 
-version '1.0'
-sourceCompatibility = 1.8
+plugins {
+  id "com.adarshr.test-logger" version "1.3.0"
+}
 
-task fatJar(type: Jar) {
-	manifest {
-        attributes 'Implementation-Title': 'Taxes App',  
-        	'Implementation-Version': version,
-        	'Main-Class': 'MainApp'
+testlogger {
+    theme 'standard'
+    showExceptions true
+    slowThreshold 1000
+    showSummary true
+    showStandardStreams false
+}
+
+version '0.2'
+
+apply plugin: 'java'
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
     }
-    baseName = 'TaxesApp' + '-' + project.name
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -24,4 +40,15 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.testfx:testfx-junit:4.0+'
     testCompile "org.mockito:mockito-core:1.+"
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+jfx {
+    mainClass = 'zpi.taxcalculator.MainApp'
+    jfxMainAppJarName = "TaxesApp-" + project.name+ "-" +version+".jar"
+    vendor = 'ZPI.PROJECT.COMPANY'
+	copyAdditionalAppResourcesToJar = true
+	nativeReleaseVersion = version
+	appName = "TaxesApp"
 }
