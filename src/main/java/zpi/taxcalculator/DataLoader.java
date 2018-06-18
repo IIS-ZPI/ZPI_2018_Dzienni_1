@@ -1,4 +1,6 @@
-import model.TaxData;
+package zpi.taxcalculator;
+
+import zpi.taxcalculator.model.TaxData;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

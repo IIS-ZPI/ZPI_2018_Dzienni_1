@@ -1,3 +1,5 @@
+package zpi.taxcalculator;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,14 +10,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("view/RootLayout.fxml"));
-        int width = 550, height = 450;
+        Parent root = FXMLLoader.load(getClass().getResource("/view/RootLayout.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, width, height));
-        primaryStage.setMaxHeight(height);
-        primaryStage.setMaxWidth(width);
-        primaryStage.setMinHeight(height);
-        primaryStage.setMinWidth(width);
+        primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
 
