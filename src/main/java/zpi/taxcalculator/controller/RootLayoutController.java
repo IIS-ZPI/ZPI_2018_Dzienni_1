@@ -1,21 +1,27 @@
 package zpi.taxcalculator.controller;
 
+
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import zpi.taxcalculator.model.TaxData;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import zpi.taxcalculator.DataLoader;
+import zpi.taxcalculator.ProductLoader;
+import zpi.taxcalculator.model.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RootLayoutController {
-
-    private Map<String, TaxData> data;
-    private List<String> listOfStates;
+    private Map<String, TaxData> taxDatasMap;
+    private Map<String, Product> productsMap;
+    private List<Product> productList;
+    private List<TaxPolicy> taxPolicyList;
+    private Map<String,InvoiceEntry> choosenProductTaxDataMap = new HashMap<>();
 
 
     @FXML
@@ -25,32 +31,76 @@ public class RootLayoutController {
     private TextField sellingPriceTextField;
 
     @FXML
-    private TextField buyingPriceTextField;
-
-    @FXML
     private TableView table;
+
     @FXML
     private Button buttonCalculate;
 
     @FXML
+    private TableColumn<TableViewContainer,String> stateColumn;
+    @FXML
+    private TableColumn<TableViewContainer,Float> nettoColumn;
+    @FXML
+    private TableColumn<TableViewContainer,Float> bruttoColumn;
+    @FXML
+    private TableColumn<TableViewContainer,Float> profitColumn;
+
+
+    @FXML
     public void initialize() {
-//        Map<String, TaxData> data = new HashMap<>();
-//        DataLoader dataLoader = new DataLoader( "data/data.tsv");
-//        data = dataLoader.getData();
-//        listOfStates = data.keySet().stream().collect(Collectors.toList());
-//        comboBox.setItems(FXCollections.observableList(listOfStates));
-//        comboBox.getSelectionModel().selectFirst();
+        DataLoader dataLoader = new DataLoader( "data/data.tsv");
+        ProductLoader productLoader = new ProductLoader( "data/product_list.csv");
+        productList = productLoader.getData();
+        taxDatasMap = dataLoader.getData();
+        productsMap = new HashMap<>();
+
+        for(Product product : productList)
+            productsMap.put(product.getName(),product);
+
+        comboBox.setItems(FXCollections.observableList(new ArrayList<>(productsMap.keySet())));
+        comboBox.getSelectionModel().selectFirst();
+
+        List<TaxData> taxDataList = new ArrayList<>(taxDatasMap.values());
+        taxPolicyList = new ArrayList<>();
+        for(TaxData taxdata : taxDataList){
+            taxPolicyList.add(new TaxPolicy(taxdata));
+        }
+        stateColumn.setCellValueFactory(new PropertyValueFactory<>("stateName"));
+        nettoColumn.setCellValueFactory(new PropertyValueFactory<>("netPrice"));
+        bruttoColumn.setCellValueFactory(new PropertyValueFactory<>("grossPrice"));
+        profitColumn.setCellValueFactory(new PropertyValueFactory<>("profit"));
+
+        table.getColumns().setAll(stateColumn,nettoColumn,bruttoColumn,profitColumn);
+
     }
 
     @FXML
     public void calculate() {
-        //Use regex in future for security
-        Float sellingPrice = Float.valueOf(sellingPriceTextField.getCharacters().toString());
-        Float buyingPrice = Float.valueOf(buyingPriceTextField.getCharacters().toString());
-        System.out.println("Not implemented yet !");
-        //TO-DO
+        String sellingPriceTextFieldValue = sellingPriceTextField.getCharacters().toString();
+        float sellingPrice = 0;
+        if (sellingPriceTextFieldValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
+            sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
+        }
+        Product choosenProduct =  productsMap.get(comboBox.getSelectionModel().getSelectedItem());
+        choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
+
+        table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice));
+
+
+
     }
 
+    private ObservableList<TableViewContainer> getProductTaxTableData(Map<String,InvoiceEntry> map, float sellingPrice){
+        ObservableList<TableViewContainer> tableViewContainerObservableList = FXCollections.observableArrayList();
 
+        for(String stateName : map.keySet()){
+            tableViewContainerObservableList.add(new TableViewContainer(
+                    stateName,
+                    map.get(stateName).getProduct().getNetPrice(),
+                    map.get(stateName).getGrossPrice(),
+                    sellingPrice - map.get(stateName).getGrossPrice()));
+        }
 
+        return tableViewContainerObservableList;
+    }
 }
