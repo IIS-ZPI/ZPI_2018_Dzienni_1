@@ -44,6 +44,10 @@ public class TaxPolicy {
         return tax;
     }
 
+    public String getState() {
+        return taxData.getState();
+    }
+
     private float parseFloat(String taxString, Float productNetPrice) {
         Pattern taxThresholdPattern = Pattern.compile("[be],>\\d+");
         Pattern floatPattern = Pattern.compile("^\\d*\\.?\\d*$");
