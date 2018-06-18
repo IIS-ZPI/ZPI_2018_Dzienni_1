@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import model.TaxData;
+import zpi.taxcalculator.model.TaxData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
