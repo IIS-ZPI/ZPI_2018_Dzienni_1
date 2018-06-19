@@ -59,8 +59,8 @@ public class RootLayoutController {
 
     @FXML
     public void initialize() {
-        DataLoader dataLoader = new DataLoader( "data/data.tsv");
-        ProductLoader productLoader = new ProductLoader( "data/product_list.csv");
+        DataLoader dataLoader = new DataLoader(getClass().getResource("/data/data.tsv"));
+        ProductLoader productLoader = new ProductLoader(getClass().getResource("/data/product_list.csv"));
         productList = productLoader.getData();
         taxDatasMap = dataLoader.getData();
         productsMap = new HashMap<>();

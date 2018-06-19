@@ -4,20 +4,21 @@ import zpi.taxcalculator.model.TaxData;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class DataLoader {
     private static final byte DATA_PER_STATE = 8;
     private Scanner scanner;
-    private String fileName;
+    private URL fileName;
     private Map<String, TaxData> data = new HashMap<>();
 
-    public DataLoader(String fileName) {
+    public DataLoader(URL fileName) {
         this.fileName = fileName;
         try {
-            scanner = new Scanner(new FileReader(fileName));
-        } catch (FileNotFoundException e) {
+            scanner = new Scanner(fileName.openStream());
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
     }
