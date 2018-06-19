@@ -33,9 +33,6 @@ public class RootLayoutController {
     private ComboBox<String> comboBoxCategories;
 
     @FXML
-    private Label labelPrice;
-
-    @FXML
     private TextField sellingPriceTextField;
 
     @FXML
@@ -44,8 +41,6 @@ public class RootLayoutController {
     @FXML
     private TableView table;
 
-    @FXML
-    private Button buttonCalculate;
 
     @FXML
     private TableColumn<TableViewContainer,String> stateColumn;
@@ -78,11 +73,9 @@ public class RootLayoutController {
         comboBoxProducts.setItems(FXCollections.observableList(getComboBoxProductsListByCategory(comboBoxCategories.getSelectionModel().getSelectedItem())));
         comboBoxProducts.getSelectionModel().selectFirst();
 
-        comboBoxCategories.valueProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue ov, String t, String t1) {
-                comboBoxProducts.setItems(FXCollections.observableList(getComboBoxProductsListByCategory(t1)));
-                comboBoxProducts.getSelectionModel().selectFirst();
-            }
+        comboBoxCategories.valueProperty().addListener((ov, t, t1) -> {
+            comboBoxProducts.setItems(FXCollections.observableList(getComboBoxProductsListByCategory(t1)));
+            comboBoxProducts.getSelectionModel().selectFirst();
         });
 
         List<TaxData> taxDataList = new ArrayList<>(taxDatasMap.values());
@@ -113,13 +106,14 @@ public class RootLayoutController {
         if(!sellingPriceTextFieldValue.isEmpty())
             if (sellingPriceTextFieldValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                 sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
-                if(sellingPrice<=0) sellingPrice=0;
+                if(sellingPrice<=0) sellingPrice = 0;
             }
 
         if(!marginTextFieldValue.isEmpty())
-            margin = Float.valueOf(marginTextFieldValue);
-        if(margin <= 0) margin = 0;
-
+            if(marginTextFieldValue.matches("([0-9]|[1-8][0-9]|9[0-9]|100)")) {
+                margin = Float.valueOf(marginTextFieldValue);
+                if (margin <= 0) margin = 0;
+            }
 
         Product choosenProduct =  productsMap.get(comboBoxProducts.getSelectionModel().getSelectedItem());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);

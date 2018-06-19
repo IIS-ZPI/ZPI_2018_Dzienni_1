@@ -18,13 +18,12 @@
                 <TableColumn fx:id="profitColumn" prefWidth="75.0" text="Profit" />
             </columns>
         </TableView>
-        <TextField fx:id="sellingPriceTextField" layoutX="15.0" layoutY="149.0" promptText="Selling Final Price" />
-        <Button fx:id="buttonCalculate" layoutX="15.0" layoutY="356.0" mnemonicParsing="false" onAction="#calculate" text="Calculate" />
+        <TextField fx:id="sellingPriceTextField" layoutX="15.0" layoutY="108.0" promptText="Selling Final Price" />
+        <Button layoutX="15.0" layoutY="356.0" mnemonicParsing="false" onAction="#calculate" text="Calculate" />
         <ComboBox fx:id="comboBoxProducts" layoutX="14.0" layoutY="57.0" prefWidth="150.0" />
       <ComboBox fx:id="comboBoxCategories" layoutX="14.0" layoutY="16.0" prefWidth="150.0" />
-      <Label fx:id="labelPrice" layoutX="15.0" layoutY="95.0" prefHeight="26.0" prefWidth="187.0" text="Bought by Price :" />
-      <TextField fx:id="marginTextField" layoutX="15.0" layoutY="201.0" promptText="Margin" />
-      <Label layoutX="15.0" layoutY="131.0" prefHeight="18.0" prefWidth="122.0" text="Selling Price" />
-      <Label layoutX="15.0" layoutY="183.0" prefHeight="18.0" prefWidth="65.0" text="Margin" />
+      <TextField fx:id="marginTextField" layoutX="15.0" layoutY="160.0" promptText="Margin" />
+      <Label layoutX="15.0" layoutY="90.0" prefHeight="18.0" prefWidth="122.0" text="Selling Price" />
+      <Label layoutX="15.0" layoutY="142.0" prefHeight="18.0" prefWidth="65.0" text="Margin" />
     </children>
 </AnchorPane>
