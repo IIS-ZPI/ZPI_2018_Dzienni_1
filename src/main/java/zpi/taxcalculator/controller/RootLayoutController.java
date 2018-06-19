@@ -78,9 +78,11 @@ public class RootLayoutController {
     public void calculate() {
         String sellingPriceTextFieldValue = sellingPriceTextField.getCharacters().toString();
         float sellingPrice = 0;
-        if (sellingPriceTextFieldValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-            sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
-        }
+        if(!sellingPriceTextFieldValue.isEmpty())
+            if (sellingPriceTextFieldValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
+                sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
+                if(sellingPrice<=0) sellingPrice=0;
+            }
         Product choosenProduct =  productsMap.get(comboBox.getSelectionModel().getSelectedItem());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
 
@@ -92,15 +94,24 @@ public class RootLayoutController {
 
     private ObservableList<TableViewContainer> getProductTaxTableData(Map<String,InvoiceEntry> map, float sellingPrice){
         ObservableList<TableViewContainer> tableViewContainerObservableList = FXCollections.observableArrayList();
-
-        for(String stateName : map.keySet()){
-            tableViewContainerObservableList.add(new TableViewContainer(
-                    stateName,
-                    map.get(stateName).getProduct().getNetPrice(),
-                    map.get(stateName).getGrossPrice(),
-                    sellingPrice - map.get(stateName).getGrossPrice()));
+        if(sellingPrice!=0) {
+            for (String stateName : map.keySet()) {
+                tableViewContainerObservableList.add(new TableViewContainer(
+                        stateName,
+                        map.get(stateName).getProduct().getNetPrice(),
+                        map.get(stateName).getGrossPrice(),
+                        sellingPrice - map.get(stateName).getGrossPrice()));
+            }
         }
-
+        else{
+            for (String stateName : map.keySet()) {
+                tableViewContainerObservableList.add(new TableViewContainer(
+                        stateName,
+                        map.get(stateName).getProduct().getNetPrice(),
+                        map.get(stateName).getGrossPrice(),
+                        sellingPrice));
+            }
+        }
         return tableViewContainerObservableList;
     }
 }
