@@ -39,6 +39,9 @@ public class RootLayoutController {
     private TextField sellingPriceTextField;
 
     @FXML
+    private TextField marginTextField;
+
+    @FXML
     private TableView table;
 
     @FXML
@@ -88,33 +91,47 @@ public class RootLayoutController {
             taxPolicyList.add(new TaxPolicy(taxdata));
         }
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("stateName"));
+        stateColumn.setSortType(TableColumn.SortType.ASCENDING);
         nettoColumn.setCellValueFactory(new PropertyValueFactory<>("netPrice"));
         bruttoColumn.setCellValueFactory(new PropertyValueFactory<>("grossPrice"));
         profitColumn.setCellValueFactory(new PropertyValueFactory<>("profit"));
+        profitColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         table.getColumns().setAll(stateColumn,nettoColumn,bruttoColumn,profitColumn);
+
+
 
     }
 
     @FXML
     public void calculate() {
         String sellingPriceTextFieldValue = sellingPriceTextField.getCharacters().toString();
+        String marginTextFieldValue = marginTextField.getCharacters().toString();
         float sellingPrice = 0;
+        float margin = 0;
+
         if(!sellingPriceTextFieldValue.isEmpty())
             if (sellingPriceTextFieldValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                 sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
                 if(sellingPrice<=0) sellingPrice=0;
             }
+
+        if(!marginTextFieldValue.isEmpty())
+            margin = Float.valueOf(marginTextFieldValue);
+        if(margin <= 0) margin = 0;
+
+
         Product choosenProduct =  productsMap.get(comboBoxProducts.getSelectionModel().getSelectedItem());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
-
-        table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice));
+        System.out.println(margin);
+        table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice,margin));
+        table.getSortOrder().add(profitColumn);
 
 
 
     }
 
-    private ObservableList<TableViewContainer> getProductTaxTableData(Map<String,InvoiceEntry> map, float sellingPrice){
+    private ObservableList<TableViewContainer> getProductTaxTableData(Map<String,InvoiceEntry> map, float sellingPrice, float margin){
         ObservableList<TableViewContainer> tableViewContainerObservableList = FXCollections.observableArrayList();
         if(sellingPrice!=0) {
             for (String stateName : map.keySet()) {
@@ -122,7 +139,7 @@ public class RootLayoutController {
                         stateName,
                         map.get(stateName).getProduct().getNetPrice(),
                         map.get(stateName).getGrossPrice(),
-                        sellingPrice - map.get(stateName).getGrossPrice()));
+                        (sellingPrice - map.get(stateName).getGrossPrice()) * (margin/100) + (sellingPrice - map.get(stateName).getGrossPrice())));
             }
         }
         else{
