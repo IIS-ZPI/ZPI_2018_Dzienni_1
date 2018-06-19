@@ -1,6 +1,8 @@
 package zpi.taxcalculator.controller;
 
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RootLayoutController {
     private Map<String, TaxData> taxDatasMap;
@@ -22,10 +23,17 @@ public class RootLayoutController {
     private List<Product> productList;
     private List<TaxPolicy> taxPolicyList;
     private Map<String,InvoiceEntry> choosenProductTaxDataMap = new HashMap<>();
+    private List<String> categories;
 
 
     @FXML
-    private ComboBox<String> comboBox;
+    private ComboBox<String> comboBoxProducts;
+
+    @FXML
+    private ComboBox<String> comboBoxCategories;
+
+    @FXML
+    private Label labelPrice;
 
     @FXML
     private TextField sellingPriceTextField;
@@ -53,12 +61,26 @@ public class RootLayoutController {
         productList = productLoader.getData();
         taxDatasMap = dataLoader.getData();
         productsMap = new HashMap<>();
+        categories = new ArrayList<>();
 
-        for(Product product : productList)
-            productsMap.put(product.getName(),product);
+        for(Product product : productList) {
+            productsMap.put(product.getName(), product);
+            if(!categories.contains(product.getProductType().toString()))
+                categories.add(product.getProductType().toString());
+        }
 
-        comboBox.setItems(FXCollections.observableList(new ArrayList<>(productsMap.keySet())));
-        comboBox.getSelectionModel().selectFirst();
+        comboBoxCategories.setItems(FXCollections.observableList(categories));
+        comboBoxCategories.getSelectionModel().selectFirst();
+
+        comboBoxProducts.setItems(FXCollections.observableList(getComboBoxProductsListByCategory(comboBoxCategories.getSelectionModel().getSelectedItem())));
+        comboBoxProducts.getSelectionModel().selectFirst();
+
+        comboBoxCategories.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue ov, String t, String t1) {
+                comboBoxProducts.setItems(FXCollections.observableList(getComboBoxProductsListByCategory(t1)));
+                comboBoxProducts.getSelectionModel().selectFirst();
+            }
+        });
 
         List<TaxData> taxDataList = new ArrayList<>(taxDatasMap.values());
         taxPolicyList = new ArrayList<>();
@@ -83,7 +105,7 @@ public class RootLayoutController {
                 sellingPrice = Float.valueOf(sellingPriceTextFieldValue);
                 if(sellingPrice<=0) sellingPrice=0;
             }
-        Product choosenProduct =  productsMap.get(comboBox.getSelectionModel().getSelectedItem());
+        Product choosenProduct =  productsMap.get(comboBoxProducts.getSelectionModel().getSelectedItem());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
 
         table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice));
@@ -113,5 +135,14 @@ public class RootLayoutController {
             }
         }
         return tableViewContainerObservableList;
+    }
+
+    private List<String> getComboBoxProductsListByCategory(String category){
+        List<String> comboBoxProductsList = new ArrayList<>();
+        for(Product product : productList) {
+            if(product.getProductType().toString().equals(category))
+                comboBoxProductsList.add(product.getName());
+        }
+        return comboBoxProductsList;
     }
 }
