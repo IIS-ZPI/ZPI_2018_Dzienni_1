@@ -12,8 +12,6 @@ import zpi.taxcalculator.DataLoader;
 import zpi.taxcalculator.ProductLoader;
 import zpi.taxcalculator.model.*;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,12 +55,7 @@ public class RootLayoutController {
     @FXML
     public void initialize() {
         DataLoader dataLoader = new DataLoader(getClass().getResource("/data/data.tsv"));
-        ProductLoader productLoader = null;
-        try {
-            productLoader = new ProductLoader(new URL("http://pkapust.kis.p.lodz.pl/ZPI/product_list.csv"));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        ProductLoader productLoader = new ProductLoader(getClass().getResource("/data/product_list.csv"));
         productList = productLoader.getData();
         taxDatasMap = dataLoader.getData();
         productsMap = new HashMap<>();
