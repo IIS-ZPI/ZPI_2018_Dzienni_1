@@ -12,7 +12,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/RootLayout.fxml"));
         int width = 550, height = 450;
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Taxes App");
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setMaxHeight(height);
         primaryStage.setMaxWidth(width);
