@@ -116,7 +116,7 @@ public class RootLayoutController {
             }
         Product choosenProduct =  productsMap.get(comboBoxProducts.getSelectionModel().getSelectedItem());
         Float baseNetPrice= choosenProduct.getNetPrice();
-        choosenProduct.setNetPrice((choosenProduct.getNetPrice() * (margin/100)) + choosenProduct.getNetPrice());
+        //choosenProduct.setNetPrice((choosenProduct.getNetPrice() * (margin/100)) + choosenProduct.getNetPrice());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
         table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice,margin));
         table.getSortOrder().add(profitColumn);
@@ -132,17 +132,17 @@ public class RootLayoutController {
             for (String stateName : map.keySet()) {
                 tableViewContainerObservableList.add(new TableViewContainer(
                         stateName,
-                        map.get(stateName).getProduct().getNetPrice(),
-                        map.get(stateName).getGrossPrice(),
-                        sellingPrice-map.get(stateName).getProduct().getNetPrice()));
+                        sellingPrice - (sellingPrice*(map.get(stateName).getTax().getTaxValuePercent()/ 100f)),
+                        sellingPrice,
+                        (sellingPrice - (sellingPrice*(map.get(stateName).getTax().getTaxValuePercent()/ 100f)))-map.get(stateName).getProduct().getNetPrice()));
             }
         }
         else{
             for (String stateName : map.keySet()) {
                 tableViewContainerObservableList.add(new TableViewContainer(
                         stateName,
-                        map.get(stateName).getProduct().getNetPrice(),
-                        map.get(stateName).getGrossPrice(),
+                        sellingPrice/(map.get(stateName).getTax().getTaxValuePercent() +1),
+                        sellingPrice,
                         sellingPrice));
             }
         }
