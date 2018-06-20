@@ -114,12 +114,13 @@ public class RootLayoutController {
                 margin = Float.valueOf(marginTextFieldValue);
                 if (margin <= 0) margin = 0;
             }
-
         Product choosenProduct =  productsMap.get(comboBoxProducts.getSelectionModel().getSelectedItem());
+        Float baseNetPrice= choosenProduct.getNetPrice();
+        choosenProduct.setNetPrice((choosenProduct.getNetPrice() * (margin/100)) + choosenProduct.getNetPrice());
         choosenProductTaxDataMap = InvoiceGenerator.generateInvoice(choosenProduct,taxPolicyList);
-        System.out.println(margin);
         table.setItems(getProductTaxTableData(choosenProductTaxDataMap,sellingPrice,margin));
         table.getSortOrder().add(profitColumn);
+        choosenProduct.setNetPrice(baseNetPrice);
 
 
 
@@ -133,7 +134,7 @@ public class RootLayoutController {
                         stateName,
                         map.get(stateName).getProduct().getNetPrice(),
                         map.get(stateName).getGrossPrice(),
-                        (sellingPrice - map.get(stateName).getGrossPrice()) * (margin/100) + (sellingPrice - map.get(stateName).getGrossPrice())));
+                        sellingPrice-map.get(stateName).getProduct().getNetPrice()));
             }
         }
         else{
