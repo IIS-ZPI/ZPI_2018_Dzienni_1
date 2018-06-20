@@ -2,8 +2,10 @@ package zpi.taxcalculator.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -25,7 +27,9 @@ public class InvoiceGeneratorTest {
     List<Product> productList = new ArrayList<Product>();
     List<TaxPolicy> policyList = new ArrayList<TaxPolicy>();
 
-    List<InvoiceEntry> invoice = new ArrayList<>();
+    List<InvoiceEntry> invoice = new ArrayList<InvoiceEntry>();
+
+    HashMap<String, InvoiceEntry> listOfInvoiceEntriesByState = new HashMap<String, InvoiceEntry>();
 
     @Before
     public void setUp() throws Exception {
@@ -35,6 +39,19 @@ public class InvoiceGeneratorTest {
         policyList.add(policy2);
 
     }
+
+    @Test
+    public void generateInvoiceReturningHashMap(){
+        listOfInvoiceEntriesByState = InvoiceGenerator.generateInvoice(product1, policyList);
+    }
+
+    @Test
+    public void generateInvoiceReturningHashMapShouldReturnCorrectNumberOfStates(){
+        policyList.add(policy3);
+        listOfInvoiceEntriesByState = InvoiceGenerator.generateInvoice(product1, policyList);
+        assertThat(3, is(listOfInvoiceEntriesByState.size()));
+    }
+
 
     @Test
     public void generateInvoice() {

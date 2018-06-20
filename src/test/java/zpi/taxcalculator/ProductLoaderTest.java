@@ -72,7 +72,4 @@ public class ProductLoaderTest {
         }
     }
 
-    @Ignore @Test
-    public void getData() {
-    }
 }
